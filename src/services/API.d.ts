@@ -68,6 +68,7 @@ declare global {
       name: string; // 国际化对应的name
       language_id: string; // 国际化对应的id
       menu_type: MenuTypes; // 菜单类型
+      menu_api: string; // 菜单依赖接口
       path?: string; // 路由url
       icon?: string; // 菜单图标
       component?: string; // 菜单对应的文件路径

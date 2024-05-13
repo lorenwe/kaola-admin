@@ -3,7 +3,7 @@ import { SearchParams } from '@/utils/types/system/menu-management';
 import { ActionType, ColumnsState, ProColumns, ProTable } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { Form, Space, Tag } from 'antd';
-import { drop, find, get, map, mapValues } from 'lodash-es'
+import { find, get, mapValues } from 'lodash-es'
 import { useBoolean, useRequest } from 'ahooks'
 import { useRef, type FC, useState } from 'react';
 import DropdownMenu from '@/components/DropdownMenu'
@@ -16,7 +16,6 @@ import { MenuTypeEnum, IconFont, LAYOUT_TYPE_OPTS, NAV_THEME_OPTS } from '@/util
 import { formatPerfix, formatResponse, randomTagColor, renderColumnsStateMap } from '@/utils/tools';
 
 import FormTemplate from './FormTemplate' // 表单组件
-
 
 // 默认不显示的 column 项
 const MENU_CFG = [
@@ -144,7 +143,8 @@ const TableTemplate: FC = () => {
 			title: formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'permission') }),
 			dataIndex: 'permission',
 			ellipsis: true,
-			tip: formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'permission.tooltip') }),
+			tooltip: formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'permission.tooltip') }),
+			//tip: formatMessage({ id: formatPerfix(ROUTES.MENUMANAGEMENT, 'permission.tooltip') }),
 			hideInSearch: true,
 			width: 250,
 			align: 'center',

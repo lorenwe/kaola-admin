@@ -98,7 +98,7 @@ export const BasiLayout: RunTimeLayoutConfig = ({ initialState, setInitialState 
       console.log('菜单的折叠收起事件')
 			// setInitialState((initState) => ({ ...initState, collapsed: collapsed }));
 		},
-    childrenRender: () => {
+    childrenRender: (children) => {
       const element = useKeepOutlets();
       return (
         <>

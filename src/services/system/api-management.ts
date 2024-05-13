@@ -8,7 +8,7 @@ import axios from "@/utils/tools/axios";
  */
 export const getApiList = async (options?: SearchParams) => {
   try {
-    const { data } = await axios.post<SysResponse<IBasePagination<API.APIMANAGEMENT>>>('/adm/admin/api/list', options);
+    const { data } = await axios.post<SysResponse<any>>('/adm/admin/api/list', options);
     return data;
   } catch (err) {
     console.error('错误拦截', err);

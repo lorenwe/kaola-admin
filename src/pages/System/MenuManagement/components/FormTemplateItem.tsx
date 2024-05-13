@@ -12,6 +12,7 @@ import { INTERNATION, MENU_TYPE, ROUTES } from '@/utils/enums'
 import type { FormTemplateProps } from '@/utils/types/system/menu-management';
 import MenuFormRender from './MenuFormRender';
 import { formatPerfix } from '@/utils/tools';
+import { getApiList } from '@/services/system/api-management';
 
 const { Title } = Typography;
 
@@ -23,8 +24,10 @@ const FormTemplateItem: FC<Pick<FormTemplateProps, 'treeData'>> = ({ treeData })
 	const { parent_id, name } = form.getFieldsValue(true)
 	// console.log("FormTemplateItem", parent_id, name)
 	// 获取国际化列表
-	const { data: internationalData } = useRequest(
-		async () => get(await getInternationalList({ is_menu: true }), 'data', []))
+	const {data: internationalData } = useRequest(async () => get(await getInternationalList({ is_menu: true }), 'data', []))
+
+	// 获取接口列表
+	const {data: apiData } = useRequest(async () => get(await getApiList({status: 1}), 'data', []))
 
 	// 是按钮就显示
 	const isMenuRender = (
@@ -165,6 +168,33 @@ const FormTemplateItem: FC<Pick<FormTemplateProps, 'treeData'>> = ({ treeData })
 			<ProFormSort colProps={{ span: 8 }} />
 			{/* 状态 */}
 			<ProFormStatus colProps={{ span: 8 }} />
+			{/* 依赖接口配置横线 */}
+			<Divider orientation="left" style={{ marginTop: 0, marginBottom: 24 }}>
+				<Title level={4} style={{ marginBottom: 0 }}>
+					依赖接口
+					{/* {formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.route-config` })} */}
+				</Title>
+			</Divider>
+			{/* 菜单权限 */}
+			<ProFormTreeSelect
+				name="menu_api"
+				label={formatMessage({ id: formatPerfix(ROUTES.ROLEMANAGEMENT, 'menu_permission') })}
+				colProps={{ span: 24 }}
+				fieldProps={{
+					treeNodeFilterProp: 'api_name',
+					treeDefaultExpandAll: true,
+					treeData: apiData,
+					allowClear: true,
+					fieldNames: {
+						label: 'api_name',
+						value: 'id',
+					},
+					maxTagCount: 10,
+					treeCheckable: true,
+					showCheckedStrategy: TreeSelect.SHOW_ALL,
+					placeholder: formatMessage({ id: INTERNATION.PLACEHOLDER_SELETED }) + formatMessage({ id: formatPerfix(ROUTES.ROLEMANAGEMENT, 'menu_permission') }),
+				}}
+			/>
 			<ProFormDependency name={['menu_type']}>
 				{({ menu_type }) => {
 					return menu_type === MENU_TYPE.MENU ? <MenuFormRender /> : null;

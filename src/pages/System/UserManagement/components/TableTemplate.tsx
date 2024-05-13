@@ -165,11 +165,6 @@ const TableTemplate: FC = () => {
 						return <UnlockOutlined style={styles} className={PrimaryColor} />    
 					}
 				}
-				// return {
-				// 	[SEX.FEMALE]: <WomanOutlined style={{ color: colors[record.sex], ...styles }} />,
-				// 	[SEX.MALE]: <ManOutlined style={{ color: colors[record.sex], ...styles }} />,
-				// 	[SEX.PRIVACY]: <UnlockOutlined style={styles} className={PrimaryColor} />,
-				// }[record.sex]
 			},
 		},
 		{
