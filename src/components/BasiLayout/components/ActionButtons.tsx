@@ -2,7 +2,7 @@
 import { EllipsisOutlined, QuestionCircleOutlined, SyncOutlined } from '@ant-design/icons';
 import { KeepAliveContext, useIntl } from '@umijs/max'
 import { FloatButton } from 'antd'
-import { FC, useContext, useState } from 'react'
+import { FC, useContext, useEffect, useState } from 'react'
 
 import { INTERNATION } from '@/utils/enums'
 
@@ -12,23 +12,28 @@ const ActionButtons: FC = () => {
   const { refreshTab } = useContext(KeepAliveContext);
   // 受控展开，需配合 trigger 一起使用
   const [open, setOpen] = useState<boolean>(false)
+  const onChange = (checked: boolean) => {
+    setOpen(checked);
+  };
+
   return (
     <FloatButton.Group
       open={open}
       icon={<EllipsisOutlined />}
-      trigger="click"
-      onOpenChange={(open) => setOpen(open)}>
+      trigger="hover"
+      onOpenChange={onChange}
+    >
       {/* Github issues*/}
       <FloatButton
         icon={<QuestionCircleOutlined />}
-        onClick={() => window.open('//github.com/baiwumm/Xmw-Admin/issues')}
+        onClick={() => window.open('//github.com/lorenwe/kaola-admin/issues')}
         tooltip={formatMessage({ id: `${INTERNATION.BASICLAYOUT}.ActionButtons.github-issues` })}
       />
       {/* 项目文档 */}
-      <FloatButton
+      {/* <FloatButton
         onClick={() => window.open('//docs.baiwumm.com/personal-project/xmw-admin')}
         tooltip={formatMessage({ id: `${INTERNATION.BASICLAYOUT}.ActionButtons.document` })}
-      />
+      /> */}
       {/* 刷新页面 */}
       <FloatButton
         icon={<SyncOutlined />}

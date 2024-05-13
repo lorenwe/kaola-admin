@@ -118,6 +118,18 @@ declare global {
       method: ApiMethodTypes; // 接口请求方式
     } & TableTimes & CommonTypes;
 
+    // 基础接口-用户登录信息
+    type USERINFO = {
+      id:number; // 用户id
+      user_id:number; // 用户id
+      token?:string; // 登录token
+      username?:string; // 用户名称
+      nick_name?:string; // 用户昵称
+      avatar?: string; // 头像地址
+      tags?: string[]; // 人物标签
+      role_id?: number; // 角色id
+      role_name?: string; // 角色名称
+    };
 
 
 

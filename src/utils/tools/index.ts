@@ -4,10 +4,9 @@ import { LOCAL_STORAGE, REQUEST_CODE, RESPONSE_DATA_CODE, ROUTES } from '../enum
 import { history } from '@umijs/max';
 import { stringify } from 'querystring';
 import { InitialStateTypes, LockSleepTypes, IBasePagination, SysResponse } from '../types';
-import { UserInfo, Permissions } from '@/services/user/users';
-import { UserMenus } from '@/services/user/menu';
 import { ColumnsState, RequestData } from '@ant-design/pro-components';
 import CryptoJS from 'crypto-js'; // AES/DES加密
+import { getPermissions, getUserInfo, getUserMenu } from '@/services/basis/user-info';
 
 // 判断图片文件类型
 export const isImageFile = (fileType: string, allowedTypes: string[]): boolean => {
@@ -33,9 +32,9 @@ export const initUserAuthority = async (): Promise<InitialStateTypes> => {
       permissions
     ] =
       await Promise.all([
-        UserInfo(), 
-        UserMenus(), 
-        Permissions()
+        getUserInfo(), 
+        getUserMenu(), 
+        getPermissions()
       ])
     // 初始化全局状态
     return {

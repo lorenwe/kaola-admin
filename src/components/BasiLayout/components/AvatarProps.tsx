@@ -16,6 +16,8 @@ export default function AvatarProps(openLockScreen: () => void):HeaderProps['ava
   // 获取全局状态
   const { initialState, setInitialState } = useModel('@@initialState');
 
+  console.log('AvatarProps', initialState)
+
   // 退出登录，并且将当前的 url 保存
 	const { run: loginOut } = useRequest(Logout, {
     manual: true,

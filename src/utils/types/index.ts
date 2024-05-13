@@ -5,7 +5,7 @@ import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 //全局状态数据流
 export type InitialStateTypes = {
   access_token?: string;
-  current_user?: USER.UserInfo;
+  current_user?: API.USERINFO;
   permissions?: string[];
   user_menu?: UserMenuDataItem[];
   collapsed?: boolean;
