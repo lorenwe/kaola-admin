@@ -2,15 +2,13 @@ import { INTERNATION, LOCAL_STORAGE, OPERATION, STATUS } from '@/utils/enums'
 import { formatPathName, formatPerfix, getLocalStorageItem, randomTagColor } from '@/utils/tools'
 import { PlusOutlined } from '@ant-design/icons'
 import { ProColumns } from '@ant-design/pro-components'
-import { Access } from '@umijs/max'
-import { useAccess } from '@umijs/max'
+import { Access, FormattedMessage, useAccess } from '@umijs/max'
 import { Button, Space, Tag } from 'antd'
 import defaultSettings from '../../../config/defaultSettings';
 import dayjs from 'dayjs'
-import { find, get, reduce, toNumber } from 'lodash-es'
+import { get, reduce, toNumber } from 'lodash-es'
 import { FC } from 'react'
-import { FormattedMessage } from '@umijs/max'
-
+import permissions from '@/utils/permission'
 
 // 状态
 export const statusColumn: ProColumns = {
@@ -25,7 +23,6 @@ export const statusColumn: ProColumns = {
     [STATUS.NORMAL]: { text: <FormattedMessage id={INTERNATION.STATUS_NORMAL} />, status: 'Processing' },
   },
 }
-
 
 // 排序
 export const sortColumn: ProColumns = {
@@ -91,16 +88,6 @@ export const operationColumn: ProColumns = {
 // 渲染表单标题
 export const renderFormTitle = (pathName: string, id: string, name: string) => {
   const result = (
-    // <Space size={0}>
-    //   {id ? "编辑" : "新增"}
-    //   {"系统设置-菜单管理"}
-    //   {
-    //     id && <div> : <span style={
-    //         {color: get(getLocalStorageItem(LOCAL_STORAGE.LAYOUT), 'colorPrimary', defaultSettings.colorPrimary),}
-    //       }>{name}</span>
-    //     </div>
-    //   }
-    // </Space>
     <Space>
       <FormattedMessage id={`menu.${formatPathName(pathName)}.${id ? OPERATION.EDIT : OPERATION.ADD}`} />
       <FormattedMessage id={`pages.${formatPathName(pathName)}.title`} />
@@ -127,23 +114,17 @@ type CreateButtonProps = {
 }
 export const CreateButton: FC<CreateButtonProps> = ({ callback, pathName }) => {
   // 权限定义集合
-  // const access = useAccess();
+  const access = useAccess();
   return (
-    // <Access
-    //   accessible={access.operationPermission(
-    //     get(permissions, `${formatPathName(pathName)}.${OPERATION.ADD}`, ''),
-    //   )}
-    //   fallback={null}
-    //   key="plus"
-    // >
-    //   <Button type="primary" onClick={() => callback()}>
-    //     <PlusOutlined />
-    //     <FormattedMessage id={formatPerfix(pathName, OPERATION.ADD, true)} />
-    //   </Button>
-    // </Access>
-    <Button type="primary" onClick={() => callback()}>
-      <PlusOutlined />
-      {<FormattedMessage id={formatPerfix(pathName, OPERATION.ADD, true)} />}
-    </Button>
+    <Access
+      accessible={access.operationPermission(get(permissions, `${formatPathName(pathName)}.${OPERATION.ADD}`, ''),)}
+      fallback={null}
+      key="plus"
+    >
+      <Button type="primary" onClick={() => callback()}>
+        <PlusOutlined />
+        <FormattedMessage id={formatPerfix(pathName, OPERATION.ADD, true)} />
+      </Button>
+    </Access>
   )
 }

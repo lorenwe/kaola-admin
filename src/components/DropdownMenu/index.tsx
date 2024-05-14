@@ -7,7 +7,7 @@ import { FC } from 'react'
 
 import { formatPathName, isSuccess } from '@/utils/tools'
 import { INTERNATION, OPERATION } from '@/utils/enums'
-// import permissions from '@/utils/permission'
+import permissions from '@/utils/permission'
 import type { SysResponse } from '@/utils/types'
 import { useIntl } from '@umijs/max'
 
@@ -41,28 +41,70 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
   const formatPerfix = formatPathName(pathName)
   // 下拉菜单
   const menuItems: MenuProps['items'] = [
-    // 添加子级
-    {
+    // // 添加子级
+    // {
+    //   label: <Access
+    //     accessible={access.operationPermission(get(permissions, `${formatPerfix}.${OPERATION.ADDCHILD}`, ''))}
+    //     fallback={null}>
+    //     <span>{addChildCallback ? formatMessage({ id: `menu.${formatPerfix}.${OPERATION.ADDCHILD}` }) : null}</span>
+    //   </Access>,
+    //   icon: <ClusterOutlined />,
+    //   key: OPERATION.ADDCHILD,
+    //   disabled: !addChildCallback,
+    // },
+    // // 编辑
+    // {
+    //   label: <Access
+    //     accessible={access.operationPermission(get(permissions, `${formatPerfix}.${OPERATION.EDIT}`, ''))}
+    //     fallback={null}>
+    //     <span>{formatMessage({ id: `menu.${formatPerfix}.${OPERATION.EDIT}` })}</span>
+    //   </Access>,
+    //   icon: <EditOutlined />,
+    //   key: OPERATION.EDIT,
+    //   disabled: !editCallback,
+    // },
+    // // 删除
+    // {
+    //   label: <Access
+    //     accessible={access.operationPermission(get(permissions, `${formatPerfix}.${OPERATION.DELETE}`, ''))}
+    //     fallback={null}>
+    //     <span>{formatMessage({ id: `menu.${formatPerfix}.${OPERATION.DELETE}` })}</span>
+    //   </Access>,
+    //   icon: <DeleteOutlined />,
+    //   key: OPERATION.DELETE,
+    //   disabled: !deleteParams,
+    // },
+  ]
+
+  // 添加子级
+  if (access.operationPermission(get(permissions, `${formatPerfix}.${OPERATION.ADDCHILD}`, ''))) {
+    menuItems.push({
       label: <span>{addChildCallback ? formatMessage({ id: `menu.${formatPerfix}.${OPERATION.ADDCHILD}` }) : null}</span>,
       icon: <ClusterOutlined />,
       key: OPERATION.ADDCHILD,
       disabled: !addChildCallback,
-    },
-    // 编辑
-    {
+    });
+  }
+
+  // 编辑
+  if (access.operationPermission(get(permissions, `${formatPerfix}.${OPERATION.EDIT}`, ''))) {
+    menuItems.push({
       label: <span>{formatMessage({ id: `menu.${formatPerfix}.${OPERATION.EDIT}` })}</span>,
       icon: <EditOutlined />,
       key: OPERATION.EDIT,
       disabled: !editCallback,
-    },
-    // 删除
-    {
+    });
+  }
+
+  // 删除
+  if (access.operationPermission(get(permissions, `${formatPerfix}.${OPERATION.DELETE}`, ''))) {
+    menuItems.push({
       label: <span>{formatMessage({ id: `menu.${formatPerfix}.${OPERATION.DELETE}` })}</span>,
       icon: <DeleteOutlined />,
       key: OPERATION.DELETE,
       disabled: !deleteParams,
-    },
-  ]
+    });
+  }
 
   // 点击菜单回调
   const onClickMenuItem: MenuProps['onClick'] = ({ key }) => {
