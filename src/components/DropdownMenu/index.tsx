@@ -1,6 +1,6 @@
 // 表格操作下拉菜单
 import { ClusterOutlined, DeleteOutlined, DownOutlined, EditOutlined } from '@ant-design/icons' // antd 图标库
-import { Access, useAccess } from '@umijs/max'
+import { useAccess } from '@umijs/max'
 import { App, Button, Dropdown, MenuProps } from 'antd'
 import { filter, get } from 'lodash-es'
 import { FC } from 'react'
@@ -40,41 +40,7 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
   // 国际化前缀
   const formatPerfix = formatPathName(pathName)
   // 下拉菜单
-  const menuItems: MenuProps['items'] = [
-    // // 添加子级
-    // {
-    //   label: <Access
-    //     accessible={access.operationPermission(get(permissions, `${formatPerfix}.${OPERATION.ADDCHILD}`, ''))}
-    //     fallback={null}>
-    //     <span>{addChildCallback ? formatMessage({ id: `menu.${formatPerfix}.${OPERATION.ADDCHILD}` }) : null}</span>
-    //   </Access>,
-    //   icon: <ClusterOutlined />,
-    //   key: OPERATION.ADDCHILD,
-    //   disabled: !addChildCallback,
-    // },
-    // // 编辑
-    // {
-    //   label: <Access
-    //     accessible={access.operationPermission(get(permissions, `${formatPerfix}.${OPERATION.EDIT}`, ''))}
-    //     fallback={null}>
-    //     <span>{formatMessage({ id: `menu.${formatPerfix}.${OPERATION.EDIT}` })}</span>
-    //   </Access>,
-    //   icon: <EditOutlined />,
-    //   key: OPERATION.EDIT,
-    //   disabled: !editCallback,
-    // },
-    // // 删除
-    // {
-    //   label: <Access
-    //     accessible={access.operationPermission(get(permissions, `${formatPerfix}.${OPERATION.DELETE}`, ''))}
-    //     fallback={null}>
-    //     <span>{formatMessage({ id: `menu.${formatPerfix}.${OPERATION.DELETE}` })}</span>
-    //   </Access>,
-    //   icon: <DeleteOutlined />,
-    //   key: OPERATION.DELETE,
-    //   disabled: !deleteParams,
-    // },
-  ]
+  const menuItems: MenuProps['items'] = []
 
   // 添加子级
   if (access.operationPermission(get(permissions, `${formatPerfix}.${OPERATION.ADDCHILD}`, ''))) {
