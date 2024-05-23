@@ -4,7 +4,7 @@ import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { useIntl, useAccess } from '@umijs/max'
 import { useBoolean, useRequest } from 'ahooks';
 import { App, Form, Popconfirm, Space, Switch, Tag } from 'antd'
-import { get, map, toNumber } from 'lodash-es'
+import { get } from 'lodash-es'
 import { FC, useRef, useState } from 'react';
 
 import DropdownMenu from '@/components/DropdownMenu' // 表格操作下拉菜单
@@ -20,7 +20,7 @@ import {
 } from '@/components/TableColumns'
 import { delApi, getApiList, setApiStatus } from '@/services/system/api-management' // 角色管理接口
 import { formatPerfix, formatResponse, isSuccess, randomTagColor } from '@/utils/tools'
-import { ApiMethodEnum, ApiTypeEnum, IconFont } from '@/utils/const'
+import { ApiMethodEnum, IconFont } from '@/utils/const'
 import { API_METHOD_TYPE, API_TYPE, INTERNATION, ROUTES, STATUS } from '@/utils/enums'
 import type { ApiStatusProps, SearchParams } from '@/utils/types/system/api-management'
 import permissions from '@/utils/permission'
@@ -71,27 +71,37 @@ const TableTemplate: FC = () => {
 		setApiLoadingFalse()
 	}
 
-	// 渲染设置角色状态 system:api-management:edit-state
+	// 渲染设置角色状态
 	const renderStatus = (record: API.APIMANAGEMENT) => {
+		return (
+			<Popconfirm
+				title={formatMessage({ id: INTERNATION.POPCONFIRM_TITLE })}
+				open={id === record.id && apiLoading}
+				onConfirm={() => changeApiStatus(record)}
+				onCancel={() => setApiLoadingFalse()}
+				key="popconfirm"
+			><Switch
+					checkedChildren={formatMessage({ id: INTERNATION.STATUS_NORMAL })}
+					unCheckedChildren={formatMessage({ id: INTERNATION.STATUS_DISABLE })}
+					checked={record.status === STATUS.NORMAL}
+					loading={id === record.id && apiLoading}
+					onChange={() => { setApiLoadingTrue(); setId(record.id) }}
+				/>
+			</Popconfirm>
+		)
+	}
+
+	// 根据权限渲染状态栏 system:api-management:edit-state
+	const accessColumns = ():ProColumns => {
 		if (access.operationPermission(get(permissions, `system.api-management.edit-state`, ''))) {
-			return (
-				<Popconfirm
-					title={formatMessage({ id: INTERNATION.POPCONFIRM_TITLE })}
-					open={id === record.id && apiLoading}
-					onConfirm={() => changeApiStatus(record)}
-					onCancel={() => setApiLoadingFalse()}
-					key="popconfirm"
-				><Switch
-						checkedChildren={formatMessage({ id: INTERNATION.STATUS_NORMAL })}
-						unCheckedChildren={formatMessage({ id: INTERNATION.STATUS_DISABLE })}
-						checked={record.status === STATUS.NORMAL}
-						loading={id === record.id && apiLoading}
-						onChange={() => { setApiLoadingTrue(); setId(record.id) }}
-					/>
-				</Popconfirm>
-			)
+			return {
+				...statusColumn,
+				render: (_, record) => renderStatus(record),
+			}
+		} else {
+			return statusColumn
 		}
-	} 
+	}
 	
 	// proTable columns 配置项
 	const columns: ProColumns<API.APIMANAGEMENT>[] = [
@@ -151,10 +161,7 @@ const TableTemplate: FC = () => {
 			ellipsis: true,
 		},
 		/* 状态 */
-		{
-			...statusColumn,
-			render: (_, record) => renderStatus(record),
-		},
+		accessColumns(),
 		/* 排序 */
 		sortColumn,
 		/* 创建时间 */

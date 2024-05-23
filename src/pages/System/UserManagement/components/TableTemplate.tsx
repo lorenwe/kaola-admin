@@ -19,7 +19,7 @@ import {
 	statusColumn,
 } from '@/components/TableColumns'
 import { delUser, getUserList, setUserStatus } from '@/services/system/user-management' // 用户管理接口
-import { decryptionAesPsd, formatPerfix, formatResponse, isSuccess, renderColumnsStateMap } from '@/utils/tools'
+import { formatPerfix, formatResponse, isSuccess, renderColumnsStateMap } from '@/utils/tools'
 import { IconFont } from '@/utils/const'
 import { INTERNATION, ROUTES, SEX, STATUS } from '@/utils/enums'
 import type { SearchParams } from '@/utils/types/system/user-management'
@@ -77,43 +77,34 @@ const TableTemplate: FC = () => {
 
 	// 渲染状态设置  system:user-management:edit-state
 	const renderStatus = (record: API.USERMANAGEMENT) => {
-		console.log("renderStatus", "权限验证", get(permissions, `system.user-management.edit-state`, ''))
+		return (
+			<Popconfirm
+				title={formatMessage({ id: INTERNATION.POPCONFIRM_TITLE })}
+				open={userId === record.id as string && userLoading}
+				onConfirm={() => changeUserStatus(record)}
+				onCancel={() => setUserLoadingFalse()}
+				key="popconfirm"
+			><Switch
+					checkedChildren={formatMessage({ id: INTERNATION.STATUS_NORMAL })}
+					unCheckedChildren={formatMessage({ id: INTERNATION.STATUS_DISABLE })}
+					checked={record.status === STATUS.NORMAL}
+					loading={userId === record.id as string && userLoading}
+					onChange={() => { setUserLoadingTrue(); setUserId(record.id as string) }}
+				/>
+			</Popconfirm>
+		)
+	}
+	// 根据权限渲染状态栏 system:api-management:edit-state
+	const accessColumns = ():ProColumns => {
 		if (access.operationPermission(get(permissions, `system.user-management.edit-state`, ''))) {
-			console.log("renderStatus", "权限验证")
-			return (
-				<Popconfirm
-					title={formatMessage({ id: INTERNATION.POPCONFIRM_TITLE })}
-					open={userId === record.id as string && userLoading}
-					onConfirm={() => changeUserStatus(record)}
-					onCancel={() => setUserLoadingFalse()}
-					key="popconfirm"
-				><Switch
-						checkedChildren={formatMessage({ id: INTERNATION.STATUS_NORMAL })}
-						unCheckedChildren={formatMessage({ id: INTERNATION.STATUS_DISABLE })}
-						checked={record.status === STATUS.NORMAL}
-						loading={userId === record.id as string && userLoading}
-						onChange={() => { setUserLoadingTrue(); setUserId(record.id as string) }}
-					/>
-				</Popconfirm>
-			)
+			return {
+				...statusColumn,
+				render: (_, record) => renderStatus(record),
+			}
+		} else {
+			return statusColumn
 		}
 	}
-	// const renderStatus = (record: API.USERMANAGEMENT) => (
-	// 	<Popconfirm
-	// 		title={formatMessage({ id: INTERNATION.POPCONFIRM_TITLE })}
-	// 		open={userId === record.id as string && userLoading}
-	// 		onConfirm={() => changeUserStatus(record)}
-	// 		onCancel={() => setUserLoadingFalse()}
-	// 		key="popconfirm"
-	// 	><Switch
-	// 			checkedChildren={formatMessage({ id: INTERNATION.STATUS_NORMAL })}
-	// 			unCheckedChildren={formatMessage({ id: INTERNATION.STATUS_DISABLE })}
-	// 			checked={record.status === STATUS.NORMAL}
-	// 			loading={userId === record.id as string && userLoading}
-	// 			onChange={() => { setUserLoadingTrue(); setUserId(record.id as string) }}
-	// 		/>
-	// 	</Popconfirm>
-	// );
 
 	// proTable columns 配置项
 	const columns: ProColumns<API.USERMANAGEMENT>[] = [
@@ -222,10 +213,7 @@ const TableTemplate: FC = () => {
 			align: 'center',
 		},
 		/* 状态 */
-		{
-			...statusColumn,
-			render: (_, record) => renderStatus(record),
-		},
+		accessColumns(),
 		/* 排序 */
 		sortColumn,
 		/* 创建时间 */

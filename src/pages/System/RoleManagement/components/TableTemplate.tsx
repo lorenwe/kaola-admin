@@ -72,43 +72,34 @@ const TableTemplate: FC = () => {
 
 	// 渲染状态设置  system:role-management:edit-state
 	const renderStatus = (record: API.ROLEMANAGEMENT) => {
-		// console.log("renderStatus", "权限验证", get(permissions, `system.role-management.edit-state`, ''))
+		return (
+			<Popconfirm
+				title={formatMessage({ id: INTERNATION.POPCONFIRM_TITLE })}
+				open={roleId === record.id && roleLoading}
+				onConfirm={() => changeRoleStatus(record)}
+				onCancel={() => setRoleLoadingFalse()}
+				key="popconfirm"
+			><Switch
+					checkedChildren={formatMessage({ id: INTERNATION.STATUS_NORMAL })}
+					unCheckedChildren={formatMessage({ id: INTERNATION.STATUS_DISABLE })}
+					checked={record.status === STATUS.NORMAL}
+					loading={roleId === record.id && roleLoading}
+					onChange={() => { setRoleLoadingTrue(); setRoleId(record.id) }}
+				/>
+			</Popconfirm>
+		)
+	}
+	// 根据权限渲染状态栏 system:api-management:edit-state
+	const accessColumns = ():ProColumns => {
 		if (access.operationPermission(get(permissions, `system.role-management.edit-state`, ''))) {
-			return (
-				<Popconfirm
-					title={formatMessage({ id: INTERNATION.POPCONFIRM_TITLE })}
-					open={roleId === record.id && roleLoading}
-					onConfirm={() => changeRoleStatus(record)}
-					onCancel={() => setRoleLoadingFalse()}
-					key="popconfirm"
-				><Switch
-						checkedChildren={formatMessage({ id: INTERNATION.STATUS_NORMAL })}
-						unCheckedChildren={formatMessage({ id: INTERNATION.STATUS_DISABLE })}
-						checked={record.status === STATUS.NORMAL}
-						loading={roleId === record.id && roleLoading}
-						onChange={() => { setRoleLoadingTrue(); setRoleId(record.id) }}
-					/>
-				</Popconfirm>
-			)
+			return {
+				...statusColumn,
+				render: (_, record) => renderStatus(record),
+			}
+		} else {
+			return statusColumn
 		}
 	}
-	// 渲染设置角色状态
-	// const renderStatus = (record: API.ROLEMANAGEMENT) => (
-	// 	<Popconfirm
-	// 		title={formatMessage({ id: INTERNATION.POPCONFIRM_TITLE })}
-	// 		open={roleId === record.id && roleLoading}
-	// 		onConfirm={() => changeRoleStatus(record)}
-	// 		onCancel={() => setRoleLoadingFalse()}
-	// 		key="popconfirm"
-	// 	><Switch
-	// 			checkedChildren={formatMessage({ id: INTERNATION.STATUS_NORMAL })}
-	// 			unCheckedChildren={formatMessage({ id: INTERNATION.STATUS_DISABLE })}
-	// 			checked={record.status === STATUS.NORMAL}
-	// 			loading={roleId === record.id && roleLoading}
-	// 			onChange={() => { setRoleLoadingTrue(); setRoleId(record.id) }}
-	// 		/>
-	// 	</Popconfirm>
-	// );
 	// proTable columns 配置项
 	const columns: ProColumns<API.ROLEMANAGEMENT>[] = [
 		{
@@ -130,10 +121,7 @@ const TableTemplate: FC = () => {
 			ellipsis: true,
 		},
 		/* 状态 */
-		{
-			...statusColumn,
-			render: (_, record) => renderStatus(record),
-		},
+		accessColumns(),
 		/* 排序 */
 		sortColumn,
 		/* 创建时间 */
