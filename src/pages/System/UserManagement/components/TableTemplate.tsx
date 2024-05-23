@@ -2,10 +2,10 @@
 import { ManOutlined, UnlockOutlined, UserOutlined, WomanOutlined } from '@ant-design/icons'
 import { ActionType, ColumnsState, ProColumns, ProFormInstance, ProTable } from '@ant-design/pro-components'
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { useIntl } from '@umijs/max'
+import { useIntl, useAccess } from '@umijs/max'
 import { useBoolean, useRequest } from 'ahooks'
 import { App, Popconfirm, Space, Switch, Tag } from 'antd'
-import { cloneDeep } from 'lodash-es'
+import { cloneDeep, get } from 'lodash-es'
 import { FC, MutableRefObject, useRef, useState } from 'react';
 
 import DropdownMenu from '@/components/DropdownMenu' // 表格操作下拉菜单
@@ -23,11 +23,13 @@ import { decryptionAesPsd, formatPerfix, formatResponse, isSuccess, renderColumn
 import { IconFont } from '@/utils/const'
 import { INTERNATION, ROUTES, SEX, STATUS } from '@/utils/enums'
 import type { SearchParams } from '@/utils/types/system/user-management'
-
+import permissions from '@/utils/permission'
 import FormTemplate from './FormTemplate' // 表单组件
 
 const TableTemplate: FC = () => {
 	const { formatMessage } = useIntl();
+	// 权限定义集合
+  const access = useAccess();
 	// hooks 调用
 	const { message } = App.useApp();
 	// 分步表单实例
@@ -73,23 +75,45 @@ const TableTemplate: FC = () => {
 		setUserLoadingFalse()
 	}
 
-	// 渲染设置角色状态
-	const renderRoleStatus = (record: API.USERMANAGEMENT) => (
-		<Popconfirm
-			title={formatMessage({ id: INTERNATION.POPCONFIRM_TITLE })}
-			open={userId === record.id as string && userLoading}
-			onConfirm={() => changeUserStatus(record)}
-			onCancel={() => setUserLoadingFalse()}
-			key="popconfirm"
-		><Switch
-				checkedChildren={formatMessage({ id: INTERNATION.STATUS_NORMAL })}
-				unCheckedChildren={formatMessage({ id: INTERNATION.STATUS_DISABLE })}
-				checked={record.status === STATUS.NORMAL}
-				loading={userId === record.id as string && userLoading}
-				onChange={() => { setUserLoadingTrue(); setUserId(record.id as string) }}
-			/>
-		</Popconfirm>
-	);
+	// 渲染状态设置  system:user-management:edit-state
+	const renderStatus = (record: API.USERMANAGEMENT) => {
+		console.log("renderStatus", "权限验证", get(permissions, `system.user-management.edit-state`, ''))
+		if (access.operationPermission(get(permissions, `system.user-management.edit-state`, ''))) {
+			console.log("renderStatus", "权限验证")
+			return (
+				<Popconfirm
+					title={formatMessage({ id: INTERNATION.POPCONFIRM_TITLE })}
+					open={userId === record.id as string && userLoading}
+					onConfirm={() => changeUserStatus(record)}
+					onCancel={() => setUserLoadingFalse()}
+					key="popconfirm"
+				><Switch
+						checkedChildren={formatMessage({ id: INTERNATION.STATUS_NORMAL })}
+						unCheckedChildren={formatMessage({ id: INTERNATION.STATUS_DISABLE })}
+						checked={record.status === STATUS.NORMAL}
+						loading={userId === record.id as string && userLoading}
+						onChange={() => { setUserLoadingTrue(); setUserId(record.id as string) }}
+					/>
+				</Popconfirm>
+			)
+		}
+	}
+	// const renderStatus = (record: API.USERMANAGEMENT) => (
+	// 	<Popconfirm
+	// 		title={formatMessage({ id: INTERNATION.POPCONFIRM_TITLE })}
+	// 		open={userId === record.id as string && userLoading}
+	// 		onConfirm={() => changeUserStatus(record)}
+	// 		onCancel={() => setUserLoadingFalse()}
+	// 		key="popconfirm"
+	// 	><Switch
+	// 			checkedChildren={formatMessage({ id: INTERNATION.STATUS_NORMAL })}
+	// 			unCheckedChildren={formatMessage({ id: INTERNATION.STATUS_DISABLE })}
+	// 			checked={record.status === STATUS.NORMAL}
+	// 			loading={userId === record.id as string && userLoading}
+	// 			onChange={() => { setUserLoadingTrue(); setUserId(record.id as string) }}
+	// 		/>
+	// 	</Popconfirm>
+	// );
 
 	// proTable columns 配置项
 	const columns: ProColumns<API.USERMANAGEMENT>[] = [
@@ -200,7 +224,7 @@ const TableTemplate: FC = () => {
 		/* 状态 */
 		{
 			...statusColumn,
-			render: (_, record) => renderRoleStatus(record),
+			render: (_, record) => renderStatus(record),
 		},
 		/* 排序 */
 		sortColumn,

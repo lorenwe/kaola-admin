@@ -1,10 +1,10 @@
 // 角色管理-表格列表
 import { ActionType, ProColumns, ProTable } from '@ant-design/pro-components'
 import { useEmotionCss } from '@ant-design/use-emotion-css';
-import { useIntl } from '@umijs/max'
+import { useIntl, useAccess } from '@umijs/max'
 import { useBoolean, useRequest } from 'ahooks';
 import { App, Form, Popconfirm, Space, Switch, Tag } from 'antd'
-import { map, toNumber } from 'lodash-es'
+import { get, map, toNumber } from 'lodash-es'
 import { FC, useRef, useState } from 'react';
 
 import DropdownMenu from '@/components/DropdownMenu' // 表格操作下拉菜单
@@ -23,11 +23,13 @@ import { formatPerfix, formatResponse, isSuccess } from '@/utils/tools'
 import { IconFont } from '@/utils/const'
 import { INTERNATION, ROUTES, STATUS } from '@/utils/enums'
 import type { RoleStatusParams, SearchParams } from '@/utils/types/system/role-management'
-
+import permissions from '@/utils/permission'
 import FormTemplate from './FormTemplate' // 表单组件
 
 const TableTemplate: FC = () => {
 	const { formatMessage } = useIntl();
+	// 权限定义集合
+  const access = useAccess();
 	// hooks 调用
 	const { message } = App.useApp();
 	// 表单实例
@@ -68,23 +70,45 @@ const TableTemplate: FC = () => {
 		setRoleLoadingFalse()
 	}
 
+	// 渲染状态设置  system:role-management:edit-state
+	const renderStatus = (record: API.ROLEMANAGEMENT) => {
+		// console.log("renderStatus", "权限验证", get(permissions, `system.role-management.edit-state`, ''))
+		if (access.operationPermission(get(permissions, `system.role-management.edit-state`, ''))) {
+			return (
+				<Popconfirm
+					title={formatMessage({ id: INTERNATION.POPCONFIRM_TITLE })}
+					open={roleId === record.id && roleLoading}
+					onConfirm={() => changeRoleStatus(record)}
+					onCancel={() => setRoleLoadingFalse()}
+					key="popconfirm"
+				><Switch
+						checkedChildren={formatMessage({ id: INTERNATION.STATUS_NORMAL })}
+						unCheckedChildren={formatMessage({ id: INTERNATION.STATUS_DISABLE })}
+						checked={record.status === STATUS.NORMAL}
+						loading={roleId === record.id && roleLoading}
+						onChange={() => { setRoleLoadingTrue(); setRoleId(record.id) }}
+					/>
+				</Popconfirm>
+			)
+		}
+	}
 	// 渲染设置角色状态
-	const renderRoleStatus = (record: API.ROLEMANAGEMENT) => (
-		<Popconfirm
-			title={formatMessage({ id: INTERNATION.POPCONFIRM_TITLE })}
-			open={roleId === record.id && roleLoading}
-			onConfirm={() => changeRoleStatus(record)}
-			onCancel={() => setRoleLoadingFalse()}
-			key="popconfirm"
-		><Switch
-				checkedChildren={formatMessage({ id: INTERNATION.STATUS_NORMAL })}
-				unCheckedChildren={formatMessage({ id: INTERNATION.STATUS_DISABLE })}
-				checked={record.status === STATUS.NORMAL}
-				loading={roleId === record.id && roleLoading}
-				onChange={() => { setRoleLoadingTrue(); setRoleId(record.id) }}
-			/>
-		</Popconfirm>
-	);
+	// const renderStatus = (record: API.ROLEMANAGEMENT) => (
+	// 	<Popconfirm
+	// 		title={formatMessage({ id: INTERNATION.POPCONFIRM_TITLE })}
+	// 		open={roleId === record.id && roleLoading}
+	// 		onConfirm={() => changeRoleStatus(record)}
+	// 		onCancel={() => setRoleLoadingFalse()}
+	// 		key="popconfirm"
+	// 	><Switch
+	// 			checkedChildren={formatMessage({ id: INTERNATION.STATUS_NORMAL })}
+	// 			unCheckedChildren={formatMessage({ id: INTERNATION.STATUS_DISABLE })}
+	// 			checked={record.status === STATUS.NORMAL}
+	// 			loading={roleId === record.id && roleLoading}
+	// 			onChange={() => { setRoleLoadingTrue(); setRoleId(record.id) }}
+	// 		/>
+	// 	</Popconfirm>
+	// );
 	// proTable columns 配置项
 	const columns: ProColumns<API.ROLEMANAGEMENT>[] = [
 		{
@@ -108,7 +132,7 @@ const TableTemplate: FC = () => {
 		/* 状态 */
 		{
 			...statusColumn,
-			render: (_, record) => renderRoleStatus(record),
+			render: (_, record) => renderStatus(record),
 		},
 		/* 排序 */
 		sortColumn,
@@ -124,11 +148,8 @@ const TableTemplate: FC = () => {
 				<DropdownMenu
 					pathName={ROUTES.ROLEMANAGEMENT}
 					editCallback={() => {
-						// console.log("DropdownMenu", map(record.role_menu, n => n.menu_id))
 						form.setFieldsValue({
 							...record,
-							//role_menu: record.role_menu,// map(record.role_menu, 'menu_id'),
-							//role_menus: map(record.role_menu, n => toNumber(n.menu_id)),
 							role_menu: map(record.role_menu, n => toNumber(n)),
 						});
 						setOpenDrawerTrue()

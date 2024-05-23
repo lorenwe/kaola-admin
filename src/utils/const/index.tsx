@@ -53,7 +53,6 @@ export const ApiMethodEnum: Record<ApiMethodTypes, string> = {
   [API_METHOD_TYPE.ALL]: 'ALL',
 };
 
-
 // 状态
 export const STATUS_OPTS: LabeledValue[] = [
   {

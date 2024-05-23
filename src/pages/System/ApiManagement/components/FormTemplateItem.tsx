@@ -8,7 +8,7 @@ import type { FC } from 'react';
 
 import { ProFormDescribe, ProFormParent, ProFormSort, ProFormStatus } from '@/components/CommonProForm'
 import { formatPerfix } from '@/utils/tools'
-import { API_TYPE, INTERNATION, ROUTES } from '@/utils/enums'
+import { API_METHOD_TYPE, API_TYPE, INTERNATION, ROUTES } from '@/utils/enums'
 import type { FormTemplateProps } from '@/utils/types/system/api-management';
 import { ApiMethodEnum, ApiTypeEnum } from '@/utils/const';
 
@@ -78,9 +78,9 @@ const FormTemplateItem: FC<Pick<FormTemplateProps, 'treeData'>> = ({treeData}) =
 				colProps={{ span: 24 }}
 				label={formatMessage({ id: formatPerfix(ROUTES.APIMANAGEMENT, 'method') })}
 				fieldProps={{
-					labelInValue: true,
+					allowClear: false,
 				}}
-				options={map(ApiMethodEnum, (val, key) => ({ label: key, value: val }))}
+				valueEnum={ApiMethodEnum}
       />
 			{/* 排序 */}
 			<ProFormSort colProps={{ span: 12 }} />

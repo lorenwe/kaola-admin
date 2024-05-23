@@ -7,6 +7,7 @@ export default {
       'add': 'system:user-management:add', // 新建
       'edit': 'system:user-management:edit', // 编辑
       'delete': 'system:user-management:delete', // 删除
+      'edit-state': 'system:user-management:edit-state', // 修改状态
     },
     // 菜单管理
     'menu-management': {
@@ -20,6 +21,7 @@ export default {
       'add': 'system:role-management:add', // 新建
       'edit': 'system:role-management:edit', // 编辑
       'delete': 'system:role-management:delete', // 删除
+      'edit-state': 'system:role-management:edit-state', // 修改状态
     },
     // 国际化
     'internationalization': {
@@ -34,6 +36,7 @@ export default {
       'add-child': 'system:api-management:add-child', // 添加子级
       'edit': 'system:api-management:edit', // 编辑
       'delete': 'system:api-management:delete', // 删除
+      'edit-state': 'system:api-management:edit-state', // 修改状态
     },
   },
 }

@@ -42,6 +42,8 @@ const FormTemplate: FC<FormTemplateProps> = ({
 				reloadTable()
 				// 关闭浮层
 				handlerClose()
+			} else {
+				message.error(data.message);
 			}
 		} else {
 			const data = await createApi(values)
@@ -51,6 +53,8 @@ const FormTemplate: FC<FormTemplateProps> = ({
 				reloadTable()
 				// 关闭浮层
 				handlerClose()
+			} else {
+				message.error(data.message);
 			}
 		}
 	}
