@@ -130,21 +130,7 @@ declare global {
       role_id?: number; // 角色id
       role_name?: string; // 角色名称
     };
-
-
-
     
-    // 智能行政-活动公告
-    type ANNOUNCEMENT = TableTimes & {
-      announcement_id: string; // id 主键
-      title: string; // 标题
-      content: string; // 正文内容
-      type: AnnouncementType; // 类型
-      pinned: Flag; // 是否置顶
-      read_counts: number; // 阅读次数
-      already: Flag; // 是否已读
-    } & Pick<USERMANAGEMENT, 'user_id' | 'avatar_url' | 'cn_name'> & Pick<CommonTypes, 'status'>
-
     // 公告类型
     type AnnouncementType = EnumValues<typeof ANNOUNCEMENT_TYPE>
 

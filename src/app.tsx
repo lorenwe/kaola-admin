@@ -50,7 +50,7 @@ export async function getInitialState():Promise<InitialStateTypes> {
   // 如果不是登录页面，执行
   if (!eq(location.pathname, ROUTES.LOGIN)) {
     const result = await initUserAuthority()
-    console.log("InitialState", assign(initialState, result))
+    // console.log("InitialState", assign(initialState, result))
     // 初始化全局状态
     return assign(initialState, result)
   }

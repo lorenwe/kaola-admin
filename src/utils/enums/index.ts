@@ -63,6 +63,7 @@ export enum INTERNATION {
   UPLOADIMAGE = 'components.UploadImage',
   API_TYPE_DIR = 'global.api_type.dir',  // 接口类型-目录
   API_TYPE_API = 'global.api_type.api',  // 接口类型-接口
+  Announcement = 'global.announcement',  // 全局活动公告
 }
 
 

@@ -9,10 +9,7 @@ export default function actionsRender(props: HeaderProps) {
   const isSide = props.layout === 'side'
   if (props.isMobile || typeof window === 'undefined') return [];
   return [
-    // props.layout !== 'side' && document.body.clientWidth > 1400 ? (
-    //   <SearchInput />
-    // ) : undefined,
-    // <NoticeBell key="NoticeBell" />,
+    <NoticeBell key="NoticeBell" />,
     // 全屏
     <FullScreen key="FullScreen" />,
     // 多语言

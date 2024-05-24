@@ -1,6 +1,6 @@
 
 import { compact, eq, get, join, sample, startsWith } from 'lodash-es';
-import { LOCAL_STORAGE, REQUEST_CODE, RESPONSE_DATA_CODE, ROUTES } from '../enums';
+import { LOCAL_STORAGE, RESPONSE_DATA_CODE, ROUTES } from '../enums';
 import { history } from '@umijs/max';
 import { stringify } from 'querystring';
 import { InitialStateTypes, LockSleepTypes, IBasePagination, SysResponse } from '../types';

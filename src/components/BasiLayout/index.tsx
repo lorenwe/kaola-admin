@@ -13,6 +13,8 @@ import avatarProps from '@/components/BasiLayout/components/AvatarProps'
 import LockSleep from '@/components/BasiLayout/components/LockSleep'
 import LockScreenModal from '@/components/BasiLayout/components/LockScreenModal'
 import ActionButtons from '@/components/BasiLayout/components/ActionButtons'
+import EventSourceNotice from './components/EventSourceNotice';
+import AnnouncementDetail from './components/AnnouncementDetail';
 
 const { Paragraph } = Typography;
 
@@ -108,6 +110,10 @@ export const BasiLayout: RunTimeLayoutConfig = ({ initialState, setInitialState 
 						<LockScreenModal open={openLockModal} setOpenFalse={setLockModalFalse} />
 						{/* 睡眠弹窗 */}
 						<LockSleep />
+						{/* 公告详情 */}
+						<AnnouncementDetail />
+						{/* 消息通知 */}
+						<EventSourceNotice />
             {/* 全局通用按钮 */}
 						<ActionButtons />
             {/* 工具栏 */}
