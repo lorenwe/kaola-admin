@@ -3,13 +3,12 @@ import { StepsForm } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max'
 import { useCounter } from 'ahooks'
 import { App, Modal } from 'antd';
-import { get, subtract } from 'lodash-es'
+import { subtract } from 'lodash-es'
 import { FC } from 'react';
-
 import StrengthMeter from '@/components/StrengthMeter' // 密码强度校验
 import { renderFormTitle } from '@/components/TableColumns'
 import { createUser, updateUser } from '@/services/system/user-management'
-import { encryptionAesPsd, formatPerfix, isSuccess } from '@/utils/tools'
+import { formatPerfix, isSuccess } from '@/utils/tools'
 import { ROUTES } from '@/utils/enums'
 import type { FormTemplateProps } from '@/utils/types/system/user-management'
 
@@ -25,16 +24,12 @@ const FormTemplate: FC<FormTemplateProps> = ({
 	// hooks 调用
 	const { message } = App.useApp();
 	// 获取表单全部字段
-	// console.log("user FormTemplate", stepFormMapRef.current[0]?.current?.getFieldsValue(true))
 	const { id, username } = stepFormMapRef.current[0]?.current?.getFieldsValue(true) || {}
-	// console.log("user edit", id, username)
-	// const { id, username } =  {id:'1', username: 'admin'}
 	// 渲染标题
 	const formTitle = renderFormTitle(ROUTES.USERMANAGEMENT, id, username)
 
 	// 提交表单
 	const handlerSubmit = async (values: API.USERMANAGEMENT) => {
-		// console.log("提交表单", values)
 		// 将密码加密
 		// values.password = encryptionAesPsd(values.password)
 		// 提交数据

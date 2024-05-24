@@ -2,7 +2,6 @@
 import { useIntl } from '@umijs/max'
 import { Form, Row } from 'antd'
 import type { FC } from 'react'
-
 import UploadImage from '@/components/UploadImage' // 上传头像组件
 import { formatPerfix } from '@/utils/tools'
 import { ROUTES } from '@/utils/enums'

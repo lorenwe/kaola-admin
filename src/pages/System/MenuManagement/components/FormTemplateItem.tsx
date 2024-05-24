@@ -22,7 +22,6 @@ const FormTemplateItem: FC<Pick<FormTemplateProps, 'treeData'>> = ({ treeData })
 	const form = Form.useFormInstance()
 	// 判断是否是添加子级，有 parent_id 并且其它字段没值
 	const { parent_id, name } = form.getFieldsValue(true)
-	// console.log("FormTemplateItem", parent_id, name)
 	// 获取国际化列表
 	const {data: internationalData } = useRequest(async () => get(await getInternationalList({ is_menu: true }), 'data', []))
 
@@ -171,8 +170,7 @@ const FormTemplateItem: FC<Pick<FormTemplateProps, 'treeData'>> = ({ treeData })
 			{/* 依赖接口配置横线 */}
 			<Divider orientation="left" style={{ marginTop: 0, marginBottom: 24 }}>
 				<Title level={4} style={{ marginBottom: 0 }}>
-					依赖接口
-					{/* {formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.route-config` })} */}
+					{formatMessage({ id: `${formatPerfix(ROUTES.MENUMANAGEMENT)}.route-config` })}
 				</Title>
 			</Divider>
 			{/* 菜单权限 */}

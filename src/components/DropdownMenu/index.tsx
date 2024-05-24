@@ -98,6 +98,8 @@ const DropdownMenu: FC<DropdownMenuProps> = ({
               message.success(data.message)
               // 刷新表格
               reloadTable()
+            } else {
+              message.error(data.message)
             }
           },
         })

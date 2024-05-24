@@ -66,6 +66,8 @@ const TableTemplate: FC = () => {
 		if (isSuccess(data.code)) {
 			message.success(data.message)
 			reloadTable()
+		} else {
+			message.error(data.message)
 		}
 		// 关闭确认框
 		setApiLoadingFalse()

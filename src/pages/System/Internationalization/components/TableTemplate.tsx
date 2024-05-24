@@ -7,7 +7,6 @@ import { useBoolean, useRequest } from 'ahooks';
 import { Form, Space, Tag } from 'antd'
 import { get, has } from 'lodash-es'
 import { FC, useRef } from 'react';
-
 import DropdownMenu from '@/components/DropdownMenu' // 表格操作下拉菜单
 import {
 	columnScrollX,
@@ -52,7 +51,6 @@ const TableTemplate: FC = () => {
 	// proTable columns 配置项
 	const columns: ProColumns<API.INTERNATIONALIZATION>[] = [
 		{
-      // pages.system.internationalization.name
 			title: formatMessage({ id: formatPerfix(ROUTES.INTERNATIONALIZATION, 'name') }),
 			dataIndex: 'name',
 			ellipsis: true,
@@ -62,7 +60,6 @@ const TableTemplate: FC = () => {
 			render: (text) => <Space><Tag icon={<FontSizeOutlined className={PrimaryColor} />} >{text}</Tag></Space>,
 		},
 		{
-      // pages.system.internationalization.zh-CN
 			title: formatMessage({ id: formatPerfix(ROUTES.INTERNATIONALIZATION, LANGS.CN) }),
 			dataIndex: LANGS.CN,
 			ellipsis: true,
@@ -71,7 +68,6 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 		},
 		{
-      // pages.system.internationalization.en-US
 			title: formatMessage({ id: formatPerfix(ROUTES.INTERNATIONALIZATION, LANGS.US) }),
 			dataIndex: LANGS.US,
 			ellipsis: true,
@@ -80,7 +76,6 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 		},
 		{
-      // pages.system.internationalization.ja-JP
 			title: formatMessage({ id: formatPerfix(ROUTES.INTERNATIONALIZATION, LANGS.JP) }),
 			dataIndex: LANGS.JP,
 			ellipsis: true,
@@ -89,7 +84,6 @@ const TableTemplate: FC = () => {
 			hideInSearch: true,
 		},
 		{
-      // pages.system.internationalization.zh-TW
 			title: formatMessage({ id: formatPerfix(ROUTES.INTERNATIONALIZATION, LANGS.TW) }),
 			dataIndex: LANGS.TW,
 			ellipsis: true,

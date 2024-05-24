@@ -87,6 +87,8 @@ export const operationColumn: ProColumns = {
 
 // 渲染表单标题
 export const renderFormTitle = (pathName: string, id: string, name: string) => {
+  console.log('渲染表单标题', `menu.${formatPathName(pathName)}.${id ? OPERATION.EDIT : OPERATION.ADD}`, `pages.${formatPathName(pathName)}.title`)
+  console.log('渲染表单标题参数', pathName, id, name)
   const result = (
     <Space>
       <FormattedMessage id={`menu.${formatPathName(pathName)}.${id ? OPERATION.EDIT : OPERATION.ADD}`} />

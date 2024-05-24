@@ -1,13 +1,9 @@
 // 表单配置项
 import { ProFormText, ProFormTreeSelect } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max'
-import { useRequest } from 'ahooks'
 import { TreeSelect } from 'antd'
-import { get } from 'lodash-es'
 import type { FC } from 'react';
-
 import { ProFormDescribe, ProFormSort, ProFormStatus } from '@/components/CommonProForm'
-import { getMenuList } from '@/services/system/menu-management'
 import { formatPerfix } from '@/utils/tools'
 import { INTERNATION, ROUTES } from '@/utils/enums'
 import type { FormTemplateItemProps } from '@/utils/types/system/role-management';
@@ -15,10 +11,6 @@ import { getLocale } from '@umijs/max';
 
 const FormTemplateItem: FC<FormTemplateItemProps> = ({menuData}) => {
 	const { formatMessage } = useIntl();
-	// 获取当前菜单数据
-	// const { data: menuData } = useRequest(async (params) => get(await getMenuList(params), 'data', []), {
-	// 	defaultParams: [{ is_role: true }],
-	// })
 	return (
 		<>
 			{/* 角色名称 */}

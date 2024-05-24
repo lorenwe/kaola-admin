@@ -18,7 +18,7 @@ export enum REQUEST_CODE {
 
 // 请求成功后，自定义数据状态码
 export enum RESPONSE_DATA_CODE {
-  SUCCESS             = 200,      // 表示响应数据成功
+  SUCCESS             = 200,    // 表示响应数据成功
   PARAMS_ERROR        = 3,      // 表示请求参数错误
   UNAUTHORIZED        = 401,    // 表示登录信息失效
   

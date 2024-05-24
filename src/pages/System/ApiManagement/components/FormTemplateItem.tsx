@@ -1,14 +1,13 @@
 // 表单配置项
-import { ProFormRadio, ProFormSelect, ProFormText, ProFormTreeSelect } from '@ant-design/pro-components';
+import { ProFormRadio, ProFormSelect, ProFormText } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max'
-import { useRequest } from 'ahooks'
-import { Form, TreeSelect } from 'antd'
-import { get, keys, map } from 'lodash-es'
+import { Form } from 'antd'
+import { keys } from 'lodash-es'
 import type { FC } from 'react';
 
-import { ProFormDescribe, ProFormParent, ProFormSort, ProFormStatus } from '@/components/CommonProForm'
+import { ProFormParent, ProFormSort, ProFormStatus } from '@/components/CommonProForm'
 import { formatPerfix } from '@/utils/tools'
-import { API_METHOD_TYPE, API_TYPE, INTERNATION, ROUTES } from '@/utils/enums'
+import { API_TYPE, INTERNATION, ROUTES } from '@/utils/enums'
 import type { FormTemplateProps } from '@/utils/types/system/api-management';
 import { ApiMethodEnum, ApiTypeEnum } from '@/utils/const';
 

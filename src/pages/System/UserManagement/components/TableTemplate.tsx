@@ -7,7 +7,6 @@ import { useBoolean, useRequest } from 'ahooks'
 import { App, Popconfirm, Space, Switch, Tag } from 'antd'
 import { cloneDeep, get } from 'lodash-es'
 import { FC, MutableRefObject, useRef, useState } from 'react';
-
 import DropdownMenu from '@/components/DropdownMenu' // 表格操作下拉菜单
 import {
 	columnScrollX,
@@ -70,6 +69,8 @@ const TableTemplate: FC = () => {
 		if (isSuccess(data.code)) {
 			message.success(data.message)
 			reloadTable()
+		} else {
+			message.error(data.message)
 		}
 		// 关闭确认框
 		setUserLoadingFalse()

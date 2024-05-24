@@ -2,7 +2,6 @@
 import { ModalForm } from '@ant-design/pro-components';
 import { App, Form } from 'antd';
 import type { FC } from 'react';
-
 import { renderFormTitle } from '@/components/TableColumns'
 import { createInternational, updateInternational } from '@/services/system/internationalization'
 import { isSuccess } from '@/utils/tools'
@@ -45,6 +44,8 @@ const FormTemplate: FC<FormTemplateProps> = ({
 				reloadTable()
 				// 关闭浮层
 				handlerClose()
+			} else {
+				Message.error(message as string);
 			}
 		})
 	}

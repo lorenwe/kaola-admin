@@ -21,9 +21,8 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, open, setOpenDrawerF
 	const form = Form.useFormInstance()
 	// 获取表单全部字段
 	const { id, role_name } = form.getFieldsValue(true)
-	// console.log("role FormTemplate",form.getFieldsValue(true))
 	// 渲染标题
-	const formTitle = renderFormTitle(ROUTES.MENUMANAGEMENT, id, role_name)
+	const formTitle = renderFormTitle(ROUTES.ROLEMANAGEMENT, id, role_name)
 	// 获取当前菜单数据--在这里获取树形结构以解决异步获取树形结构出现的警告  
 	// Warning: Tree missing follow keys: ..
 	const { data: menuData } = useRequest(async (params) => get(await getMenuList(params), 'data', []), {
@@ -48,6 +47,8 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, open, setOpenDrawerF
 				reloadTable()
 				// 关闭浮层
 				handlerClose()
+			} else {
+				message.error(data.message);
 			}
 		} else {
 			const data = await createRole(values)
@@ -57,6 +58,8 @@ const FormTemplate: FC<FormTemplateProps> = ({ reloadTable, open, setOpenDrawerF
 				reloadTable()
 				// 关闭浮层
 				handlerClose()
+			} else {
+				message.error(data.message);
 			}
 		}
 	}

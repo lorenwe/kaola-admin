@@ -2,7 +2,6 @@
 import { ProFormDigit, ProFormRadio, ProFormText } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max'
 import type { FC } from 'react';
-
 import { ProFormSort, ProFormStatus } from '@/components/CommonProForm'
 import { formatPerfix } from '@/utils/tools'
 import { SEX_OPTS } from '@/utils/const'

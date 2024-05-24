@@ -2,19 +2,16 @@
 import {
 	ProFormCascader,
 	ProFormSelect,
-	ProFormTextArea,
-	ProFormTreeSelect,
+	ProFormTextArea
 } from '@ant-design/pro-components';
 import { useIntl } from '@umijs/max'
 import { useRequest } from 'ahooks'
-import { Form, TreeSelect } from 'antd'
+import { Form } from 'antd'
 import { regionData } from 'element-china-area-data'
 import { get, map } from 'lodash-es'
 import type { FC } from 'react';
 
 import FigureLabels from '@/components/FigureLabels'
-//import { getJobsList } from '@/services/administrative/jobs-management' // 岗位管理接口
-//import { getOrganizationList } from '@/services/administrative/organization' // 组织管理接口
 import { getRoleList } from '@/services/system/role-management' // 角色管理接口
 import { formatPerfix } from '@/utils/tools'
 import { INTERNATION, ROUTES } from '@/utils/enums'

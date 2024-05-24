@@ -15,14 +15,12 @@ const FormTemplate: FC<FormTemplateProps> = ({
 	open,
 	setOpenDrawerFalse,
 }) => {
-	// console.log("FormTemplate", treeData)
 	// hooks 调用
 	const { message } = App.useApp();
 	// 上下文表单实例
 	const form = Form.useFormInstance()
 	// 获取表单全部字段
 	const { id, ...formValue } = form.getFieldsValue(true)
-	// console.log("form.getFieldsValue", id, form.getFieldsValue(true));
 	// 渲染标题
 	const formTitle = renderFormTitle(ROUTES.MENUMANAGEMENT, id, formValue[getLocale()])
 
